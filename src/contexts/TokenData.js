@@ -24,7 +24,6 @@ import {
   splitQuery
 } from '../utils'
 import { timeframeOptions } from '../constants'
-import { useLatestBlock } from './Application'
 
 const UPDATE = 'UPDATE'
 const UPDATE_TOKEN_TXNS = 'UPDATE_TOKEN_TXNS'
@@ -286,9 +285,9 @@ const getTopTokens = async (ethPrice, ethPriceOld) => {
             data.oneDayTxns = data.txCount
           }
 
-          if (data.id === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') {
-            data.name = 'Ether (Wrapped)'
-            data.symbol = 'ETH'
+          if (data.id === '0x1fa6a37c64804c0d797ba6bc1955e50068fbf362') {
+            data.name = 'UBQ (Wrapped)'
+            data.symbol = 'UBQ'
           }
           return data
         })
@@ -407,10 +406,10 @@ const getTokenData = async (address, ethPrice, ethPriceOld) => {
       data.oneDayTxns = data.txCount
     }
 
-    // fix for WETH
-    if (data.id === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') {
-      data.name = 'ETH (Wrapped)'
-      data.symbol = 'ETH'
+    // fix for WUBQ
+    if (data.id === '0x1fa6a37c64804c0d797ba6bc1955e50068fbf362') {
+      data.name = 'UBQ (Wrapped)'
+      data.symbol = 'UBQ'
     }
   } catch (e) {
     console.log(e)
@@ -450,7 +449,7 @@ const getTokenPairs = async tokenAddress => {
   }
 }
 
-const getIntervalTokenData = async (tokenAddress, startTime, interval = 3600, latestBlock) => {
+const getIntervalTokenData = async (tokenAddress, startTime, interval = 3600) => {
   const utcEndTime = dayjs.utc()
   let time = startTime
 
@@ -477,12 +476,6 @@ const getIntervalTokenData = async (tokenAddress, startTime, interval = 3600, la
       return []
     }
 
-    if (latestBlock) {
-      blocks = blocks.filter(b => {
-        return parseFloat(b.number) <= parseFloat(latestBlock)
-      })
-    }
-
     let result = await splitQuery(PRICES_BY_BLOCK, client, [tokenAddress], blocks, 50)
 
     // format token ETH price results
@@ -502,7 +495,7 @@ const getIntervalTokenData = async (tokenAddress, startTime, interval = 3600, la
     let index = 0
     for (var brow in result) {
       let timestamp = brow.split('b')[1]
-      if (timestamp) {
+      if (timestamp && result[brow]) {
         values[index].priceUSD = result[brow].ethPrice * values[index].derivedETH
         index += 1
       }
@@ -691,7 +684,6 @@ export function useTokenChartData(tokenAddress) {
 export function useTokenPriceData(tokenAddress, timeWindow, interval = 3600) {
   const [state, { updatePriceData }] = useTokenDataContext()
   const chartData = state?.[tokenAddress]?.[timeWindow]?.[interval]
-  const latestBlock = useLatestBlock()
 
   useEffect(() => {
     const currentTime = dayjs.utc()
@@ -705,13 +697,13 @@ export function useTokenPriceData(tokenAddress, timeWindow, interval = 3600) {
             .unix()
 
     async function fetch() {
-      let data = await getIntervalTokenData(tokenAddress, startTime, interval, latestBlock)
+      let data = await getIntervalTokenData(tokenAddress, startTime, interval)
       updatePriceData(tokenAddress, data, timeWindow, interval)
     }
     if (!chartData) {
       fetch()
     }
-  }, [chartData, interval, timeWindow, tokenAddress, updatePriceData, latestBlock])
+  }, [chartData, interval, timeWindow, tokenAddress, updatePriceData])
 
   return chartData
 }

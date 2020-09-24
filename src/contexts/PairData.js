@@ -25,7 +25,6 @@ import {
   splitQuery
 } from '../utils'
 import { timeframeOptions } from '../constants'
-import { useLatestBlock } from './Application'
 
 const UPDATE = 'UPDATE'
 const UPDATE_PAIR_TXNS = 'UPDATE_PAIR_TXNS'
@@ -284,13 +283,13 @@ function parseData(data, oneDayData, twoDayData, oneWeekData, ethPrice, oneDayBl
   if (!oneWeekData && data) {
     data.oneWeekVolumeUSD = parseFloat(data.volumeUSD)
   }
-  if (data?.token0?.id === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') {
-    data.token0.name = 'Ether (Wrapped)'
-    data.token0.symbol = 'ETH'
+  if (data?.token0?.id === '0x1fa6a37c64804c0d797ba6bc1955e50068fbf362') {
+    data.token0.name = 'UBQ (Wrapped)'
+    data.token0.symbol = 'UBQ'
   }
-  if (data?.token1?.id === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') {
-    data.token1.name = 'Ether (Wrapped)'
-    data.token1.symbol = 'ETH'
+  if (data?.token1?.id === '0x1fa6a37c64804c0d797ba6bc1955e50068fbf362') {
+    data.token1.name = 'UBQ (Wrapped)'
+    data.token1.symbol = 'UBQ'
   }
   return data
 }
@@ -383,7 +382,7 @@ const getPairChartData = async pairAddress => {
   return data
 }
 
-const getHourlyRateData = async (pairAddress, startTime, latestBlock) => {
+const getHourlyRateData = async (pairAddress, startTime) => {
   try {
     const utcEndTime = dayjs.utc()
     let time = startTime
@@ -408,12 +407,6 @@ const getHourlyRateData = async (pairAddress, startTime, latestBlock) => {
     // catch failing case
     if (!blocks || blocks?.length === 0) {
       return []
-    }
-
-    if (latestBlock) {
-      blocks = blocks.filter(b => {
-        return parseFloat(b.number) <= parseFloat(latestBlock)
-      })
     }
 
     const result = await splitQuery(HOURLY_PAIR_RATES, client, [pairAddress], blocks, 100)
@@ -485,7 +478,6 @@ export function Updater() {
 export function useHourlyRateData(pairAddress, timeWindow) {
   const [state, { updateHourlyData }] = usePairDataContext()
   const chartData = state?.[pairAddress]?.hourlyData?.[timeWindow]
-  const latestBlock = useLatestBlock()
 
   useEffect(() => {
     const currentTime = dayjs.utc()
@@ -499,13 +491,13 @@ export function useHourlyRateData(pairAddress, timeWindow) {
             .unix()
 
     async function fetch() {
-      let data = await getHourlyRateData(pairAddress, startTime, latestBlock)
+      let data = await getHourlyRateData(pairAddress, startTime)
       updateHourlyData(pairAddress, data, timeWindow)
     }
     if (!chartData) {
       fetch()
     }
-  }, [chartData, timeWindow, pairAddress, updateHourlyData, latestBlock])
+  }, [chartData, timeWindow, pairAddress, updateHourlyData])
 
   return chartData
 }

@@ -430,10 +430,10 @@ export const Search = ({ small = false }) => {
               : below410
               ? 'Search...'
               : below470
-              ? 'Search Uniswap...'
+              ? 'Search Shinobi...'
               : below700
               ? 'Search pairs and tokens...'
-              : 'Search Uniswap pairs and tokens...'
+              : 'Search Shinobi pairs and tokens...'
           }
           value={value}
           onChange={e => {
@@ -459,13 +459,13 @@ export const Search = ({ small = false }) => {
           )}
           {filteredPairList &&
             filteredPairList.slice(0, pairsShown).map(pair => {
-              if (pair?.token0?.id === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') {
-                pair.token0.name = 'ETH (Wrapped)'
-                pair.token0.symbol = 'ETH'
+              if (pair?.token0?.id === '0x1fa6a37c64804c0d797ba6bc1955e50068fbf362') {
+                pair.token0.name = 'UBQ (Wrapped)'
+                pair.token0.symbol = 'UBQ'
               }
-              if (pair?.token1.id === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') {
-                pair.token1.name = 'ETH (Wrapped)'
-                pair.token1.symbol = 'ETH'
+              if (pair?.token1.id === '0x1fa6a37c64804c0d797ba6bc1955e50068fbf362') {
+                pair.token1.name = 'UBQ (Wrapped)'
+                pair.token1.symbol = 'UBQ'
               }
               return (
                 <BasicLink to={'/pair/' + pair.id} key={pair.id} onClick={onDismiss}>

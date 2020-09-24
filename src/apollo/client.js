@@ -4,7 +4,7 @@ import { HttpLink } from 'apollo-link-http'
 
 export const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://api.thegraph.com/subgraphs/name/ianlapham/uniswapv2'
+    uri: 'https://subgraph.ubiq.ninja/subgraphs/name/octanolabs/shinobitestx3'
   }),
   cache: new InMemoryCache(),
   shouldBatch: true
@@ -28,7 +28,7 @@ export const v1Client = new ApolloClient({
 
 export const blockClient = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks'
+    uri: 'https://subgraph.ubiq.ninja/subgraphs/name/octanolabs/ethereum-blocks'
   }),
   cache: new InMemoryCache()
 })
