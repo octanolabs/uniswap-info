@@ -73,9 +73,9 @@ export function getPoolLink(token0Address, token1Address = null, remove = false)
 
 export function getSwapLink(token0Address, token1Address = null) {
   if (!token1Address) {
-    return `shinobi.ubiq.ninja/swap?inputCurrency=${token0Address}`
+    return `https://shinobi.ubiq.ninja/swap?inputCurrency=${token0Address}`
   } else {
-    return `shinobi.ubiq.ninja/swap?inputCurrency=${
+    return `https://shinobi.ubiq.ninja/swap?inputCurrency=${
       token0Address === '0x1fa6a37c64804c0d797ba6bc1955e50068fbf362' ? 'UBQ' : token0Address
     }&outputCurrency=${token1Address === '0x1fa6a37c64804c0d797ba6bc1955e50068fbf362' ? 'UBQ' : token1Address}`
   }
