@@ -160,23 +160,18 @@ function SideNav({ history }) {
           </AutoColumn>
           <AutoColumn gap="0.5rem" style={{ marginLeft: '.75rem', marginBottom: '4rem' }}>
             <HeaderText>
-              <Link href="https://ubiq.ninja" target="_blank">
-                ubiq.ninja
+              <Link href="https://shinobi.ubiq.ninja" target="_blank">
+                Shinobi
               </Link>
             </HeaderText>
             <HeaderText>
-              <Link href="https://uniswap.org/docs/v2" target="_blank">
-                Docs
+              <Link href="https://ubiq.ninja" target="_blank">
+                Ubiq Ninja
               </Link>
             </HeaderText>
             <HeaderText>
               <Link href="https://discord.com/invite/XaqzJB4" target="_blank">
                 Discord
-              </Link>
-            </HeaderText>
-            <HeaderText>
-              <Link href="https://twitter.com/ubiqsmart" target="_blank">
-                Twitter
               </Link>
             </HeaderText>
           </AutoColumn>
