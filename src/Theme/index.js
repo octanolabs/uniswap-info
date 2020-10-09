@@ -206,6 +206,24 @@ export const GlobalStyle = createGlobalStyle`
   pointer-events: none;
 }
 
+::-webkit-scrollbar
+{
+  width: 4px;  /* for vertical scrollbars */
+  height: 4px; /* for horizontal scrollbars */
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-track
+{
+  background: #222;
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: #00ea90;
+  border-radius: 3px;
+}
+
 @media screen and (max-width: 800px) {
   .three-line-legend {
     display: none !important;
